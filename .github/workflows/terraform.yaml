@@ -13,11 +13,11 @@ On:
       - terraform/**
 
 env:
-  #Credentials for Deployment to AWS
-  AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY}}
-  AWS_SECRET_ACCESS_KEY: ${{scretes.AWS_SECRET_ACCESS_KEY}}
-  #S3 bucket for Terraform state
-  BUCKET_TF_STATE: ${{secrets.BUCKET_TF_STATE}}
+  # Credentials for deployment to AWS
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
+  AWS_SECRET_ACCESS_KEY: ${{ scretes.AWS_SECRET_ACCESS_KEY }}
+  # S3 bucket for Terraform state
+  BUCKET_TF_STATE: ${{ secrets.BUCKET_TF_STATE }}
   AWS_REGION: us-east-2
   EKS_CLUSTER: vprofile-eks
 
@@ -35,12 +35,14 @@ jobs:
 
       - name: Setup terraform on runner
         uses: hashicorp/setup-terraform@v2
+								  
 
       - name: Terraform init
         id: init
         run: terraform init -backend-config="bucket=$BUCKET_TF_STATE"
+									
 
-      - name: Terraform fmt
+      - name: Terraform format
         id: fmt
         run: terraform fmt -check
 
@@ -56,5 +58,3 @@ jobs:
       - name: Terraform plan status
         if: steps.plan.outcome == 'failure'
         run: exit 1
-      
-

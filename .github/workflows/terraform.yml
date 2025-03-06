@@ -36,7 +36,7 @@ jobs:
       - name: Setup terraform on runner
         uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: "2.0.3"
+          terraform_wrapper: True
 								  
       - name: Terraform init
         id: init
@@ -56,5 +56,5 @@ jobs:
         continue-on-error: true
 
       - name: Terraform plan status
-        if: steps.plan.conclusion == 'failure'  # <-- Corrected `if` condition
+        if: steps.plan.outcome == 'failure'  # <-- Corrected `if` condition
         run: exit 1
